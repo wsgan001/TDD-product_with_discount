@@ -42,4 +42,16 @@ public class ReceiptPrinterTest {
                 "节省：0.00(元)\n" +
                 "**********************"));
     }
+
+    @Test
+    public void should_get_receipt_message_when_given_1_badminton_with_discount() throws Exception {
+        String receiptString = new ReceiptPrinter().processOrder("ITEM000002");
+
+        assertThat(receiptString, is("***<没钱赚商店>购物清单***\n" +
+                "名称：羽毛球，数量：1个，单价：1.00(元)，小计：0.80(元), 优惠0.20(元)\n" +
+                "----------------------\n" +
+                "总计: 0.80(元)\n" +
+                "节省：0.20(元)\n" +
+                "**********************"));
+    }
 }

@@ -19,7 +19,13 @@ public class ConfigReader {
         String name = properties.getProperty(PREFIX + productCode + ".name");
         double price = Double.parseDouble(properties.getProperty(PREFIX + productCode + ".price"));
         String unit = properties.getProperty(PREFIX + productCode + ".unit");
+        String property = properties.getProperty(PREFIX + productCode + ".discountPercemtage");
 
-        return new Product(name, productCode, price, unit);
+        if (property != null) {
+            return Product.buildDiscountProduct(productCode, name, price, unit, Double.parseDouble(property));
+        }
+
+        return Product.buildNormalProduct(productCode, name, price, unit);
     }
+
 }

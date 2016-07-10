@@ -19,8 +19,7 @@ public class Order {
         orderItems.stream().map(orderItem -> stringBuilder.append(orderItem.getOrderItemString())).collect(Collectors.toList());
         return stringBuilder.toString();
     }
-
-
+    
     public void add(Product product) {
         OrderItem orderItem = new OrderItem(product);
         orderItems.add(orderItem);
@@ -28,7 +27,7 @@ public class Order {
 
     public String getTotalCostResult() {
         return "总计: " + getAllCost() + "(元)\n" +
-                "节省：0.00(元)\n";
+                "节省："+getSavedMoney()+"(元)\n";
     }
 
     public String getAllCost() {
@@ -38,5 +37,14 @@ public class Order {
         }
 
         return PriceFormatUtil.formatPrice(allCost);
+    }
+
+    public String getSavedMoney() {
+        double allSaved = 0.0;
+        for (OrderItem orderItem : orderItems) {
+            allSaved += orderItem.getItemSaved();
+        }
+
+        return PriceFormatUtil.formatPrice(allSaved);
     }
 }

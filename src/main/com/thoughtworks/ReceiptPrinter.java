@@ -7,10 +7,14 @@ import com.thoughtworks.models.Product;
 public class ReceiptPrinter {
     private ProductsRepo productsRepo = new ProductsRepo();
 
-    public String processOrder(String barcode) {
+    public String processOrder(String barcodes) {
+        String[] split = barcodes.split(",");
         Order order = new Order();
-        Product product = productsRepo.GetProductByCode(barcode);
-        order.add(product);
+        for (String barcode : split) {
+            Product product = productsRepo.GetProductByCode(barcode);
+            order.add(product);
+        }
+
         String cartItemsResult = order.getCartItemString();
         String orderTotalCostString = order.getTotalCostResult();
         return formatReceipt(cartItemsResult, orderTotalCostString);

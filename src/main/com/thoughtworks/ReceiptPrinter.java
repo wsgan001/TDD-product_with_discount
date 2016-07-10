@@ -12,15 +12,15 @@ public class ReceiptPrinter {
         Product product = productsRepo.GetProductByCode(barcode);
         order.add(product);
         String cartItemsResult = order.getCartItemString();
-        return formatReceipt(cartItemsResult);
+        String orderTotalCostString = order.getTotalCostResult();
+        return formatReceipt(cartItemsResult, orderTotalCostString);
     }
 
-    private static String formatReceipt(String cartItemsString) {
+    private static String formatReceipt(String cartItemsString, String orderTotalCostString) {
         return "***<没钱赚商店>购物清单***\n" +
                 cartItemsString +
                 "----------------------\n" +
-                "总计: 3.00(元)\n" +
-                "节省：0.00(元)\n" +
+                orderTotalCostString +
                 "**********************";
     }
 }

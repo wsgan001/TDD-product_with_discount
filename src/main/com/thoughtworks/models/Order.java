@@ -1,27 +1,42 @@
 package com.thoughtworks.models;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
+import com.thoughtworks.utils.PriceFormatUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Order {
-    private Product product;
-    private int count;
+
+    private List<OrderItem> orderItems;
 
     public Order() {
+        orderItems = new ArrayList<>();
     }
 
     public String getCartItemString() {
-        return "名称：" + product.name() + "，数量：1" + product.unit() + "，单价：" + formatPrice(product.singleUnitPrice()) + "(元)，小计：" + formatPrice(product.singleUnitPrice()) + "(元)\n";
+        StringBuilder stringBuilder = new StringBuilder();
+        orderItems.stream().map(orderItem -> stringBuilder.append(orderItem.getOrderItemString())).collect(Collectors.toList());
+        return stringBuilder.toString();
     }
 
 
     public void add(Product product) {
-        this.product = product;
+        OrderItem orderItem = new OrderItem(product);
+        orderItems.add(orderItem);
     }
 
-    private String formatPrice(Double price){
-        DecimalFormat df = new DecimalFormat("0.00");
-        df.setRoundingMode(RoundingMode.HALF_UP);
-        return df.format(price);
+    public String getTotalCostResult() {
+        return "总计: " + getAllCost() + "(元)\n" +
+                "节省：0.00(元)\n";
+    }
+
+    public String getAllCost() {
+        Double allCost = 0.0;
+        for (OrderItem orderItem : orderItems) {
+            allCost += orderItem.getItemCost();
+        }
+
+        return PriceFormatUtil.formatPrice(allCost);
     }
 }

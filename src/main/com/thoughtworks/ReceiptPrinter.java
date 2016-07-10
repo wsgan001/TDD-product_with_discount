@@ -1,9 +1,23 @@
 package com.thoughtworks;
 
+import com.thoughtworks.Repository.ProductsRepo;
+import com.thoughtworks.models.Order;
+import com.thoughtworks.models.Product;
+
 public class ReceiptPrinter {
-    public static String processOrder(String orderList){
+    private ProductsRepo productsRepo = new ProductsRepo();
+
+    public String processOrder(String barcode) {
+        Order order = new Order();
+        Product product = productsRepo.GetProductByCode(barcode);
+        order.add(product);
+        String cartItemsResult = order.getCartItemString();
+        return formatReceipt(cartItemsResult);
+    }
+
+    private static String formatReceipt(String cartItemsString) {
         return "***<没钱赚商店>购物清单***\n" +
-                "名称：可口可乐，数量：1瓶，单价：3.00(元)，小计：3.00(元)\n" +
+                cartItemsString +
                 "----------------------\n" +
                 "总计: 3.00(元)\n" +
                 "节省：0.00(元)\n" +

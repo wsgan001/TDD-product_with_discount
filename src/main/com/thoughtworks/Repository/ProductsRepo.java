@@ -37,7 +37,7 @@ public class ProductsRepo {
         this.products = loadProducts();
     }
 
-    public Product GetProductByCode(String barcode) {
+    public Product getProductByCode(String barcode) {
         return products.stream().filter(item -> item.code().equals(barcode)).findFirst().get();
     }
 

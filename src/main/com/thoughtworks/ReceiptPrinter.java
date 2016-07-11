@@ -2,22 +2,22 @@ package com.thoughtworks;
 
 import com.thoughtworks.Repository.ProductsRepo;
 import com.thoughtworks.models.Order;
-import com.thoughtworks.models.Product;
+
+import static java.util.Arrays.asList;
 
 public class ReceiptPrinter {
     private ProductsRepo productsRepo = new ProductsRepo();
 
     public String processOrder(String barcodes) {
-        String[] split = barcodes.split(",");
         Order order = new Order();
-        for (String barcode : split) {
-            Product product = productsRepo.GetProductByCode(barcode);
-            order.add(product);
-        }
 
-        String cartItemsResult = order.getCartItemString();
-        String orderTotalCostString = order.getTotalCostResult();
-        return formatReceipt(cartItemsResult, orderTotalCostString);
+        addProductToOrder(barcodes, order);
+
+        return formatReceipt(order.getCartItemString(), order.getTotalCostResult());
+    }
+
+    private void addProductToOrder(String barcodes, Order order) {
+        asList(barcodes.split(",")).stream().forEach(barcode -> order.add(productsRepo.getProductByCode(barcode)));
     }
 
     private static String formatReceipt(String cartItemsString, String orderTotalCostString) {

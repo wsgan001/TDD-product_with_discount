@@ -19,7 +19,7 @@ public class Order {
         orderItems.stream().map(orderItem -> stringBuilder.append(orderItem.getOrderItemString())).collect(Collectors.toList());
         return stringBuilder.toString();
     }
-    
+
     public void add(Product product) {
         OrderItem orderItem = new OrderItem(product);
         orderItems.add(orderItem);
@@ -27,7 +27,7 @@ public class Order {
 
     public String getTotalCostResult() {
         return "总计: " + getAllCost() + "(元)\n" +
-                "节省："+getSavedMoney()+"(元)\n";
+                "节省：" + getSavedMoney() + "(元)\n";
     }
 
     public String getAllCost() {
